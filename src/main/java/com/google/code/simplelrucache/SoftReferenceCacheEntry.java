@@ -17,12 +17,16 @@ package com.google.code.simplelrucache;
 
 import java.lang.ref.SoftReference;
 
+import org.apache.log4j.Logger;
+
 /**
  * Cache entry which uses SoftReference to store value
  * 
  * @author Damian Momot
  */
 class SoftReferenceCacheEntry<V> implements LruCacheEntry<V> {
+    protected static final Logger logger = Logger.getLogger(SoftReferenceCacheEntry.class);
+    
     private SoftReference<V> valueReference;
     private long expirationTime;
     
@@ -54,6 +58,8 @@ class SoftReferenceCacheEntry<V> implements LruCacheEntry<V> {
         //check expiration time
         if (System.currentTimeMillis() <= expirationTime) {
             value = valueReference.get();
+            
+            if (value == null) logger.warn("SoftReferency.get() returned null - probably JVM runs out of memory");
         }
 
         return value;
