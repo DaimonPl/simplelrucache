@@ -19,10 +19,10 @@ package com.google.code.simplelrucache;
  *
  * @author Damian Momot
  */
-public class SoftReferenceCacheEntryTest extends LruCacheEntryTest {
+public class StrongReferenceCacheEntryTest extends LruCacheEntryTest {
 
     @Override
     protected LruCacheEntry<String> createCacheEntry(String value, long ttl) {
-        return new SoftReferenceCacheEntry<String>(value, ttl);
+        return new StrongReferenceCacheEntry<String>(value, ttl);
     }
 }
