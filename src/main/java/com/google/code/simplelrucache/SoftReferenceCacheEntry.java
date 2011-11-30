@@ -17,7 +17,8 @@ package com.google.code.simplelrucache;
 
 import java.lang.ref.SoftReference;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Cache entry which uses SoftReference to store value
@@ -25,7 +26,7 @@ import org.apache.log4j.Logger;
  * @author Damian Momot
  */
 class SoftReferenceCacheEntry<V> implements LruCacheEntry<V> {
-    protected static final Logger logger = Logger.getLogger(SoftReferenceCacheEntry.class);
+    protected static final Logger logger = LoggerFactory.getLogger(SoftReferenceCacheEntry.class);
     
     private SoftReference<V> valueReference;
     private long expirationTime;
