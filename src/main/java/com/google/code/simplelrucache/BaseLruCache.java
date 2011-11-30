@@ -48,7 +48,7 @@ abstract class BaseLruCache<K, V> implements LruCache<K, V> {
      * @return 
      */
     protected LruCacheEntry<V> createEntry(V value, long ttl) {
-        return new SoftReferenceCacheEntry<V>(value, ttl);
+        return new StrongReferenceCacheEntry<V>(value, ttl);
     }
     
     @Override
