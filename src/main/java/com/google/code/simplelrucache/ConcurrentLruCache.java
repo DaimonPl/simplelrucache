@@ -21,6 +21,7 @@ import com.googlecode.concurrentlinkedhashmap.Weighers;
 /**
  * Threadsafe highly concurrent implementation of LruCache based on
  * ConcurrentLinkedHashMap.
+ * 
  * This implementation should be used with big number of threads.
  * 
  * @param <K> key type
@@ -36,10 +37,11 @@ public class ConcurrentLruCache<K, V> extends BaseLruCache<K, V> {
     /**
      * Creates new concurrent LRU cache
      * 
-     * @param capacity
-     * @param ttl
-     * @param initialCapacity 
-     * @param concurrencyLevel 
+     * @param capacity max cache capacity
+     * @param ttl time to live in milliseconds
+     * @param initialCapacity initial cache capacity
+     * @param concurrencyLevel
+     * @throws IllegalArgumentException if capacity is not positive
      */
     public ConcurrentLruCache(int capacity, long ttl, int initialCapacity, int concurrencyLevel) {
         super(ttl);
@@ -57,9 +59,10 @@ public class ConcurrentLruCache<K, V> extends BaseLruCache<K, V> {
     /**
      * Creates new ConcurrentLruCache with DEFAULT_CONCURRENCY_LEVEL
      * 
-     * @param capacity
-     * @param ttl
-     * @param initialCapacity 
+     * @param capacity max cache capacity
+     * @param ttl time to live in milliseconds
+     * @param initialCapacity initial cache capacity
+     * @throws IllegalArgumentException if capacity is not positive
      */
     public ConcurrentLruCache(int capacity, long ttl, int initialCapacity) {
         this(capacity, ttl, initialCapacity, DEFAULT_CONCURRENCY_LEVEL);
@@ -69,8 +72,9 @@ public class ConcurrentLruCache<K, V> extends BaseLruCache<K, V> {
      * Creates new ConcurrentLruCache with DEFAULT_CONCURRENCY_LEVEL and
      * DEFAULT_INITIAL_CAPACITY
      * 
-     * @param capacity
-     * @param ttl 
+     * @param capacity max cache capacity
+     * @param ttl time to live in milliseconds
+     * @throws IllegalArgumentException if capacity is not positive 
      */
     public ConcurrentLruCache(int capacity, long ttl) {
         this(capacity, ttl, DEFAULT_INITIAL_CAPACITY, DEFAULT_CONCURRENCY_LEVEL);

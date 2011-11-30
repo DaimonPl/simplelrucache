@@ -30,7 +30,7 @@ class SoftReferenceCacheEntry<V> implements LruCacheEntry<V> {
      * Creates LruCacheEntry with desired ttl
      *
      * @param value
-     * @param ttl
+     * @param ttl time to live in milliseconds
      * @throws IllegalArgumentException if ttl is not positive
      */
     SoftReferenceCacheEntry(V value, long ttl) {

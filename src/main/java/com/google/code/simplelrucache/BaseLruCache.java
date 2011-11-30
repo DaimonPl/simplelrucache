@@ -24,7 +24,13 @@ import java.util.concurrent.Callable;
  */
 abstract class BaseLruCache<K, V> implements LruCache<K, V> {
     private long ttl;
-
+    
+    /**
+     * Constructs BaseLruCache
+     * 
+     * @param ttl 
+     * @throws IllegalArgumentException if ttl is not positive
+     */
     protected BaseLruCache(long ttl) {
         if (ttl <= 0) throw new IllegalArgumentException("ttl must be positive");
         
@@ -40,9 +46,10 @@ abstract class BaseLruCache<K, V> implements LruCache<K, V> {
     }
     
     /**
-     * Creates new LruCacheEntry<V>
+     * Creates new LruCacheEntry<V>.
      * 
-     * @param key
+     * It can be used to change implementation of LruCacheEntry
+     * 
      * @param value
      * @param ttl
      * @return 
@@ -89,7 +96,7 @@ abstract class BaseLruCache<K, V> implements LruCache<K, V> {
     
     /**
      * Tries to retrieve value by it's key. Automatically removes entry if
-     * it's ttl has passed or reference has been cleared
+     * it's not valid (LruCacheEntry.getValue() returns null)
      *
      * @param key
      * @return
@@ -102,7 +109,7 @@ abstract class BaseLruCache<K, V> implements LruCache<K, V> {
         if (cacheEntry != null) {
             value = cacheEntry.getValue();
 
-            //autoremove entry from map if it's not valid anymore
+            //autoremove entry from cache if it's not valid
             if (value == null) remove(key);
         }
 
@@ -125,11 +132,10 @@ abstract class BaseLruCache<K, V> implements LruCache<K, V> {
     }
     
     /**
-     * Puts value as LruCacheEntry
+     * Puts entry into cache
      *
      * @param key
-     * @param value
-     * @param ttl
+     * @param entry
      */
     abstract protected void putEntry(K key, LruCacheEntry<V> entry);
 }

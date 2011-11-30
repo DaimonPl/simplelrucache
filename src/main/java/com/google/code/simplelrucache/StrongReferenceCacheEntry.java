@@ -28,7 +28,7 @@ class StrongReferenceCacheEntry<V> implements LruCacheEntry<V> {
      * Creates StrongReferencyCacheEntry with desired ttl
      *
      * @param value
-     * @param ttl
+     * @param ttl time to live in milliseconds
      * @throws IllegalArgumentException if ttl is not positive
      */
     StrongReferenceCacheEntry(V value, long ttl) {

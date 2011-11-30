@@ -48,7 +48,9 @@ public interface LruCache<K, V> {
     
     /**
      * Tries to get element from cache. If get fails callback is used
-     * to create element and value is stored in cache. Default TTL is used
+     * to create element and returned value is stored in cache.
+     * 
+     * Default TTL is used
      *
      * @param key
      * @param callback
@@ -59,7 +61,7 @@ public interface LruCache<K, V> {
     
     /**
      * Tries to get element from cache. If get fails callback is used
-     * to create element and value is stored in cache
+     * to create element and returned value is stored in cache
      *
      * @param key
      * @param callback
@@ -77,8 +79,7 @@ public interface LruCache<K, V> {
     public int getCapacity();
     
     /**
-     * Returns number of entries stored in cache (including expired and evicted
-     * ones)
+     * Returns number of entries stored in cache (including invalid ones)
      * 
      * @return number of entries
      */
@@ -87,12 +88,14 @@ public interface LruCache<K, V> {
     /**
      * Returns cache TTL
      * 
-     * @return 
+     * @return ttl in milliseconds
      */
     public long getTtl();
     
     /**
-     * Checks whether cache is empty
+     * Checks whether cache is empty.
+     * 
+     * If any entry exists (including invalid one) this method will return true
      * 
      * @return true if no entries are stored in cache
      */

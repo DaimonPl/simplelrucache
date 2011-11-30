@@ -33,7 +33,8 @@ class CapacityLruLinkedHashMap<K, V> extends LinkedHashMap<K, V> {
      * 
      * @param capacity
      * @param initialCapacity
-     * @param loadFactor 
+     * @param loadFactor
+     * @throws IllegalArgumentException if capacity is not positive
      */
     protected CapacityLruLinkedHashMap(int capacity, int initialCapacity, float loadFactor) {
         super(initialCapacity, loadFactor, true);

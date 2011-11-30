@@ -19,8 +19,9 @@ import java.util.concurrent.Callable;
 
 /**
  * Threadsafe synchronized implementation of LruCache based on LinkedHashMap.
- * Threadsafety is provided by method synchronization. This cache implementation
- * should be used with low number of threads.
+ * Threadsafety is provided by method synchronization.
+ * 
+ * This cache implementation should be used with low number of threads.
  * 
  * @param <K> key type
  * @param <V> value type
@@ -35,9 +36,9 @@ public class SynchronizedLruCache<K, V> extends BaseLruCache<K, V> {
     /**
      * Creates new SynchronizedLruCache
      * 
-     * @param capacity
-     * @param ttl
-     * @param initialCapacity
+     * @param capacity max cache capacity
+     * @param ttl time to live in milliseconds
+     * @param initialCapacity initial cache capacity
      * @param loadFactor 
      */
     public SynchronizedLruCache(int capacity, long ttl, int initialCapacity, float loadFactor) {
@@ -49,9 +50,9 @@ public class SynchronizedLruCache<K, V> extends BaseLruCache<K, V> {
     /**
      * Creates new SynchronizedLruCache with DEFAULT_LOAD_FACTOR
      * 
-     * @param capacity
-     * @param ttl
-     * @param initialCapacity 
+     * @param capacity max cache capacity
+     * @param ttl time to live in milliseconds
+     * @param initialCapacity initial cache capacity 
      */
     public SynchronizedLruCache(int capacity, long ttl, int initialCapacity) {
         this(capacity, ttl, initialCapacity, DEFAULT_LOAD_FACTOR);
@@ -61,8 +62,8 @@ public class SynchronizedLruCache<K, V> extends BaseLruCache<K, V> {
      * Creates new SynchronizedLruCache with DEFAULT_LOAD_FACTOR and
      * DEFAULT_INITIAL_CAPACITY
      * 
-     * @param capacity
-     * @param ttl 
+     * @param capacity max cache capacity
+     * @param ttl time to live in milliseconds
      */
     public SynchronizedLruCache(int capacity, long ttl) {
         this(capacity, ttl, DEFAULT_INITIAL_CAPACITY, DEFAULT_LOAD_FACTOR);
