@@ -15,8 +15,6 @@
  */
 package com.google.code.simplelrucache;
 
-import java.util.concurrent.Callable;
-
 /**
  * Threadsafe synchronized implementation of LruCache based on LinkedHashMap.
  * Threadsafety is provided by method synchronization.
