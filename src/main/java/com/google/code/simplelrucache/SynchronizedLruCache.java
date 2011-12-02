@@ -75,23 +75,8 @@ public class SynchronizedLruCache<K, V> extends BaseLruCache<K, V> {
     }
     
     @Override
-    synchronized public boolean contains(K key) {
-        return super.contains(key);
-    }
-    
-    @Override
     synchronized public V get(K key) {
         return super.get(key);
-    }
-    
-    @Override
-    synchronized public V get(K key, Callable<V> callback) throws Exception {
-        return super.get(key, callback);
-    }
-    
-    @Override
-    synchronized public V get(K key, Callable<V> callback, long ttl) throws Exception {
-        return super.get(key, callback, ttl);
     }
     
     @Override
@@ -107,16 +92,6 @@ public class SynchronizedLruCache<K, V> extends BaseLruCache<K, V> {
     @Override
     synchronized public int getSize() {
         return cacheMap.size();
-    }
-    
-    @Override
-    synchronized public boolean isEmpty() {
-        return super.isEmpty();
-    }
-    
-    @Override
-    synchronized public void put(K key, V value) {
-        super.put(key, value);
     }
     
     @Override

@@ -40,7 +40,7 @@ abstract class BaseLruCache<K, V> implements LruCache<K, V> {
     @Override
     public boolean contains(K key) {
         //can't use contains because of expiration policy
-        V value = getValue(key);
+        V value = get(key);
 
         return value != null;
     }
@@ -70,7 +70,7 @@ abstract class BaseLruCache<K, V> implements LruCache<K, V> {
     
     @Override
     public V get(K key, Callable<V> callback, long ttl) throws Exception {
-        V value = getValue(key);
+        V value = get(key);
 
         //if element doesn't exist create it using callback
         if (value == null) {
