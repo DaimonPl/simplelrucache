@@ -11,6 +11,18 @@
     <description>Simple JAVA expirable LRU cache implementation</description>
     <url>http://code.google.com/p/simplelrucache/</url>
     
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
+    
+    <scm>
+        <connection>scm:hg:http://code.google.com/p/simplelrucache/</connection>
+        <developerConnection>scm:hg:https://code.google.com/p/simplelrucache/</developerConnection>
+        <url>http://code.google.com/p/simplelrucache/</url>
+    </scm>
+    
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
