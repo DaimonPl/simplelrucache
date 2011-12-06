@@ -1,2 +1,6 @@
 syntax: glob
 target
+nb-configuration.xml
+nbactions.xml
+nbactions-sonatype-oss-release.xml
+nbactions-release-profile.xml
