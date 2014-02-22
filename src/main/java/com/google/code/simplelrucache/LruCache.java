@@ -87,14 +87,14 @@ public interface LruCache<K, V> {
 	 *
 	 * @return capacity of cache
 	 */
-	int getCapacity();
+	long getCapacity();
 
 	/**
 	 * Returns number of entries stored in cache (including invalid ones)
 	 *
 	 * @return number of entries
 	 */
-	int getSize();
+	long getSize();
 
 	/**
 	 * Returns cache TTL

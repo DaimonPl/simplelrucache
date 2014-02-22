@@ -21,9 +21,9 @@ import com.googlecode.concurrentlinkedhashmap.Weighers;
 /**
  * Threadsafe highly concurrent implementation of LruCache based on
  * ConcurrentLinkedHashMap.
- * 
+ *
  * This implementation should be used with big number of threads.
- * 
+ *
  * @param <K> key type
  * @param <V> value type
  * @author Damian Momot
@@ -31,12 +31,12 @@ import com.googlecode.concurrentlinkedhashmap.Weighers;
 public class ConcurrentLruCache<K, V> extends BaseLruCache<K, V> {
     public static final int DEFAULT_INITIAL_CAPACITY = 16;
     public static final int DEFAULT_CONCURRENCY_LEVEL = 16;
-    
+
     private ConcurrentLinkedHashMap<K, LruCacheEntry<V>> cacheMap;
-    
+
     /**
      * Creates new concurrent LRU cache
-     * 
+     *
      * @param capacity max cache capacity
      * @param ttl time to live in milliseconds
      * @param initialCapacity initial cache capacity
@@ -45,9 +45,9 @@ public class ConcurrentLruCache<K, V> extends BaseLruCache<K, V> {
      */
     public ConcurrentLruCache(int capacity, long ttl, int initialCapacity, int concurrencyLevel) {
         super(ttl);
-        
+
         if (capacity <= 0) throw new IllegalArgumentException("capacity must be positive");
-        
+
         cacheMap = new ConcurrentLinkedHashMap.Builder<K, LruCacheEntry<V>>()
             .maximumWeightedCapacity(capacity)
             .weigher(Weighers.singleton())
@@ -55,10 +55,10 @@ public class ConcurrentLruCache<K, V> extends BaseLruCache<K, V> {
             .concurrencyLevel(concurrencyLevel)
             .build();
     }
-    
+
     /**
      * Creates new ConcurrentLruCache with DEFAULT_CONCURRENCY_LEVEL
-     * 
+     *
      * @param capacity max cache capacity
      * @param ttl time to live in milliseconds
      * @param initialCapacity initial cache capacity
@@ -67,14 +67,14 @@ public class ConcurrentLruCache<K, V> extends BaseLruCache<K, V> {
     public ConcurrentLruCache(int capacity, long ttl, int initialCapacity) {
         this(capacity, ttl, initialCapacity, DEFAULT_CONCURRENCY_LEVEL);
     }
-    
+
     /**
      * Creates new ConcurrentLruCache with DEFAULT_CONCURRENCY_LEVEL and
      * DEFAULT_INITIAL_CAPACITY
-     * 
+     *
      * @param capacity max cache capacity
      * @param ttl time to live in milliseconds
-     * @throws IllegalArgumentException if capacity is not positive 
+     * @throws IllegalArgumentException if capacity is not positive
      */
     public ConcurrentLruCache(int capacity, long ttl) {
         this(capacity, ttl, DEFAULT_INITIAL_CAPACITY, DEFAULT_CONCURRENCY_LEVEL);
@@ -84,22 +84,22 @@ public class ConcurrentLruCache<K, V> extends BaseLruCache<K, V> {
     public void clear() {
         cacheMap.clear();
     }
-    
+
     @Override
-    public int getCapacity() {
+    public long getCapacity() {
         return cacheMap.capacity();
     }
-    
+
     @Override
     protected LruCacheEntry<V> getEntry(K key) {
         return cacheMap.get(key);
     }
-    
+
     @Override
-    public int getSize() {
+    public long getSize() {
         return cacheMap.size();
     }
-    
+
     @Override
     protected void putEntry(K key, LruCacheEntry<V> entry) {
         cacheMap.put(key, entry);

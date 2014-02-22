@@ -72,7 +72,7 @@ abstract class BaseLruCache<K, V> implements LruCache<K, V> {
     public V get(K key, Callable<V> callable, long ttl) throws Exception {
         V value = get(key);
 
-        //if element doesn't exist create it using callback
+        //if element doesn't exist create it using callable
         if (value == null) {
             value = callable.call();
             put(key, value, ttl);

@@ -18,9 +18,9 @@ package com.google.code.simplelrucache;
 /**
  * Threadsafe synchronized implementation of LruCache based on LinkedHashMap.
  * Threadsafety is provided by method synchronization.
- * 
+ *
  * This cache implementation should be used with low number of threads.
- * 
+ *
  * @param <K> key type
  * @param <V> value type
  * @author Damian Momot
@@ -28,57 +28,57 @@ package com.google.code.simplelrucache;
 public class SynchronizedLruCache<K, V> extends BaseLruCache<K, V> {
     public static final int DEFAULT_INITIAL_CAPACITY = 16;
     public static final float DEFAULT_LOAD_FACTOR = 0.75f;
-    
+
     private CapacityLruLinkedHashMap<K, LruCacheEntry<V>> cacheMap;
-    
+
     /**
      * Creates new SynchronizedLruCache
-     * 
+     *
      * @param capacity max cache capacity
      * @param ttl time to live in milliseconds
      * @param initialCapacity initial cache capacity
-     * @param loadFactor 
+     * @param loadFactor
      */
     public SynchronizedLruCache(int capacity, long ttl, int initialCapacity, float loadFactor) {
         super(ttl);
-        
+
         cacheMap = new CapacityLruLinkedHashMap<K, LruCacheEntry<V>>(capacity, initialCapacity, loadFactor);
     }
-    
+
     /**
      * Creates new SynchronizedLruCache with DEFAULT_LOAD_FACTOR
-     * 
+     *
      * @param capacity max cache capacity
      * @param ttl time to live in milliseconds
-     * @param initialCapacity initial cache capacity 
+     * @param initialCapacity initial cache capacity
      */
     public SynchronizedLruCache(int capacity, long ttl, int initialCapacity) {
         this(capacity, ttl, initialCapacity, DEFAULT_LOAD_FACTOR);
     }
-    
+
     /**
      * Creates new SynchronizedLruCache with DEFAULT_LOAD_FACTOR and
      * DEFAULT_INITIAL_CAPACITY
-     * 
+     *
      * @param capacity max cache capacity
      * @param ttl time to live in milliseconds
      */
     public SynchronizedLruCache(int capacity, long ttl) {
         this(capacity, ttl, DEFAULT_INITIAL_CAPACITY, DEFAULT_LOAD_FACTOR);
     }
-    
+
     @Override
     synchronized public void clear() {
         cacheMap.clear();
     }
-    
+
     @Override
     synchronized public V get(K key) {
         return super.get(key);
     }
-    
+
     @Override
-    synchronized public int getCapacity() {
+    synchronized public long getCapacity() {
         return cacheMap.getCapacity();
     }
 
@@ -86,12 +86,12 @@ public class SynchronizedLruCache<K, V> extends BaseLruCache<K, V> {
     protected LruCacheEntry<V> getEntry(K key) {
         return cacheMap.get(key);
     }
-    
+
     @Override
-    synchronized public int getSize() {
+    synchronized public long getSize() {
         return cacheMap.size();
     }
-    
+
     @Override
     synchronized public void put(K key, V value, long ttl) {
         super.put(key, value, ttl);
