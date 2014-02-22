@@ -4,3 +4,7 @@ nb-configuration.xml
 nbactions.xml
 nbactions-sonatype-oss-release.xml
 nbactions-release-profile.xml
+release.properties
+.classpath
+.project
+.settings
