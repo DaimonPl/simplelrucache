@@ -15,61 +15,66 @@
  */
 package com.google.code.simplelrucache;
 
-import org.junit.* ;
-import static org.junit.Assert.* ;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 /**
  *
  * @author Damian Momot
  */
 public class CapacityLruLinkedHashMapTest {
-    private CapacityLruLinkedHashMap map;
+    private CapacityLruLinkedHashMap<String, String> map;
     private static String[] keys;
     private static String[] values;
     private static int capacity;
-    
+
     @Before
     public void init() {
-        map = new CapacityLruLinkedHashMap(capacity, 1, 0.75f);
+        map = new CapacityLruLinkedHashMap<String, String>(capacity, 1, 0.75f);
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
         keys = new String[] {"aa", "bb", "cc", "dd", "ee", "ff", "gg", "hh"};
         values = new String[] {"aaa", "bbb", "ccc", "ddd", "eer", "fff", "ggg", "hhh"};
         capacity = 5;
     }
-    
+
     @Test(expected = IllegalArgumentException.class)
     public void constructorZeroCapacityTest() {
-        map = new CapacityLruLinkedHashMap(0, 1, 0.75f);
+        map = new CapacityLruLinkedHashMap<String, String>(0, 1, 0.75f);
     }
-    
+
     @Test(expected = IllegalArgumentException.class)
     public void constructorNegativeCapacityTest() {
-        map = new CapacityLruLinkedHashMap(-5, 1, 0.75f);
+        map = new CapacityLruLinkedHashMap<String, String>(-5, 1, 0.75f);
     }
-    
+
     @Test
     public void capacityTest() {
         assertTrue(map.isEmpty());
-        
+
         for (int i = 0; i < capacity; ++i) {
             map.put(keys[i], values[i]);
         }
-        
+
         assertEquals(capacity, map.size());
-        
+
         for (int i = capacity; i < keys.length; ++i) {
             map.put(keys[i], values[i]);
         }
-        
+
         assertEquals(capacity, map.size());
-        
+
         for(int i = 0; i < keys.length - capacity; ++i) {
             assertFalse(map.containsKey(keys[i]));
         }
-        
+
         for(int i = keys.length - capacity; i < keys.length; ++i) {
             assertTrue(map.containsKey(keys[i]));
         }

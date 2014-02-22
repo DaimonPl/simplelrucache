@@ -19,24 +19,24 @@ import java.util.concurrent.Callable;
 
 /**
  * Base class for concrete implementations
- * 
+ *
  * @author Damian Momot
  */
 abstract class BaseLruCache<K, V> implements LruCache<K, V> {
-    private long ttl;
-    
+    private final long ttl;
+
     /**
      * Constructs BaseLruCache
-     * 
-     * @param ttl 
+     *
+     * @param ttl
      * @throws IllegalArgumentException if ttl is not positive
      */
     protected BaseLruCache(long ttl) {
         if (ttl <= 0) throw new IllegalArgumentException("ttl must be positive");
-        
+
         this.ttl = ttl;
     }
-    
+
     @Override
     public boolean contains(K key) {
         //can't use contains because of expiration policy
@@ -44,56 +44,56 @@ abstract class BaseLruCache<K, V> implements LruCache<K, V> {
 
         return value != null;
     }
-    
+
     /**
      * Creates new LruCacheEntry<V>.
-     * 
+     *
      * It can be used to change implementation of LruCacheEntry
-     * 
+     *
      * @param value
      * @param ttl
-     * @return 
+     * @return
      */
     protected LruCacheEntry<V> createEntry(V value, long ttl) {
         return new StrongReferenceCacheEntry<V>(value, ttl);
     }
-    
+
     @Override
     public V get(K key) {
         return getValue(key);
     }
-    
+
     @Override
-    public V get(K key, Callable<V> callback) throws Exception {
-        return get(key, callback, ttl);
+    public V get(K key, Callable<V> callable) throws Exception {
+        return get(key, callable, ttl);
     }
-    
+
     @Override
-    public V get(K key, Callable<V> callback, long ttl) throws Exception {
+    public V get(K key, Callable<V> callable, long ttl) throws Exception {
         V value = get(key);
 
         //if element doesn't exist create it using callback
         if (value == null) {
-            value = callback.call();
+            value = callable.call();
             put(key, value, ttl);
         }
 
         return value;
     }
-    
+
     @Override
     public long getTtl() {
         return ttl;
     }
-    
+
     /**
      * Returns LruCacheEntry mapped by key or null if it does not exist
-     * 
+     *
      * @param key
-     * @return 
+     * @return
      */
     abstract protected LruCacheEntry<V> getEntry(K key);
-    
+
     /**
      * Tries to retrieve value by it's key. Automatically removes entry if
      * it's not valid (LruCacheEntry.getValue() returns null)
@@ -115,7 +115,7 @@ abstract class BaseLruCache<K, V> implements LruCache<K, V> {
 
         return value;
     }
-    
+
     @Override
     public boolean isEmpty() {
         return getSize() == 0;
@@ -130,7 +130,7 @@ abstract class BaseLruCache<K, V> implements LruCache<K, V> {
     public void put(K key, V value, long ttl) {
         if (value != null) putEntry(key, createEntry(value, ttl));
     }
-    
+
     /**
      * Puts entry into cache
      *

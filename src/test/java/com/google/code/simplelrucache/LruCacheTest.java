@@ -15,41 +15,46 @@
  */
 package com.google.code.simplelrucache;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.concurrent.Callable;
 
-import org.junit.* ;
-import static org.junit.Assert.* ;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 /**
  *
  * @author Damian Momot
  */
 abstract public class LruCacheTest {
-    private class SimpleCallback implements Callable<String> {
-        public static final String str = "callbackResult";
-        
+    private class SimpleCallable implements Callable<String> {
+        public static final String str = "callableResult";
+
         @Override
         public String call() throws Exception {
             return str;
         }
-        
+
     }
-    
+
     private static String[] keys;
     private static String[] values;
     private static String key;
     private static String value;
     private static int capacity;
     private static long ttl;
-    
+
     abstract protected LruCache<String, String> createCache(int capacity, long ttl);
-    
-    private void insertData(LruCache cache) {
+
+    private void insertData(LruCache<String, String> cache) {
         for (int i = 0; i < keys.length; ++i) {
             cache.put(keys[i], values[i]);
         }
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
         keys = new String[] {"aa", "bb", "cc", "dd", "ee", "ff", "gg", "hh"};
@@ -59,7 +64,7 @@ abstract public class LruCacheTest {
         capacity = keys.length * 2;
         ttl = 3600 * 1000;
     }
-    
+
     @Test(expected=IllegalArgumentException.class)
     public void constructorZeroCapacityTest() {
         createCache(0, ttl);
@@ -79,77 +84,78 @@ abstract public class LruCacheTest {
     public void constructorNegativeTtlTest() {
         createCache(capacity, -5);
     }
-    
+
     @Test
     public void clearTest() {
         LruCache<String, String> cache = createCache(capacity, ttl);
         insertData(cache);
         cache.clear();
-        
+
         assertEquals(0, cache.getSize());
         for (int i = 0; i < keys.length; ++i) {
             assertFalse(cache.contains(keys[i]));
         }
     }
-    
+
     @Test
     public void containsTest() {
         LruCache<String, String> cache = createCache(capacity, ttl);
         insertData(cache);
-        
+
         for (int i = 0; i < keys.length; ++i) {
             assertTrue(cache.contains(keys[i]));
         }
-        
+
         assertFalse(cache.contains("a"));
         assertFalse(cache.contains("b"));
         assertFalse(cache.contains("c"));
         assertFalse(cache.contains("d"));
     }
-    
+
     @Test
     public void getPutTest() {
         LruCache<String, String> cache = createCache(capacity, ttl);
-        
+
         cache.put(key, value);
-        
+
         assertEquals(value, cache.get(key));
     }
-    
+
     @Test
-    public void getCallbackTest() throws Exception {
+    public void getCallableTest() throws Exception {
         LruCache<String, String> cache = createCache(capacity, ttl);
-        
-        String val = cache.get(key, new SimpleCallback());
-        
-        assertEquals(SimpleCallback.str, val);
+
+        String val = cache.get(key, new SimpleCallable());
+
+        assertEquals(SimpleCallable.str, val);
     }
-    
+
     @Test
-    public void getCallbackTtl() throws Exception {
+    public void getCallableTtl() throws Exception {
         LruCache<String, String> cache = createCache(capacity, ttl);
-        String val = cache.get(key, new SimpleCallback(), 10);
+        String val = cache.get(key, new SimpleCallable(), 10);
 
         assertTrue(cache.contains(key));
-        assertEquals(SimpleCallback.str, cache.get(key));
+        assertEquals(SimpleCallable.str, val);
+        assertEquals(SimpleCallable.str, cache.get(key));
 
         Thread.sleep(20);
 
         assertFalse(cache.contains(key));
         assertNull(cache.get(key));
     }
-    
+
     @Test
-    public void getCapacityTest() {       
+    public void getCapacityTest() {
         LruCache<String, String> cache = createCache(capacity, ttl);
-        
+
         assertEquals(capacity, cache.getCapacity());
     }
-    
+
     @Test
     public void getSizeTest() {
         LruCache<String, String> cache = createCache(capacity, ttl);
-        
+
         insertData(cache);
         assertEquals(keys.length, cache.getSize());
 
@@ -161,25 +167,25 @@ abstract public class LruCacheTest {
 
         assertEquals(0, cache.getSize());
     }
-    
+
     @Test
-    public void getTtlTest() {       
+    public void getTtlTest() {
         LruCache<String, String> cache = createCache(capacity, ttl);
-        
+
         assertEquals(ttl, cache.getTtl());
     }
-    
+
     @Test
-    public void isEmptyTest() {       
+    public void isEmptyTest() {
         LruCache<String, String> cache = createCache(capacity, ttl);
-        
+
         assertTrue(cache.isEmpty());
-        
+
         insertData(cache);
         cache.clear();
         assertTrue(cache.isEmpty());
     }
-    
+
     @Test
     public void putTtlTest() throws InterruptedException {
         LruCache<String, String> cache = createCache(capacity, ttl);
@@ -197,7 +203,7 @@ abstract public class LruCacheTest {
     @Test
     public void nullsNotStoredTest() {
         LruCache<String, String> cache = createCache(capacity, ttl);
-        
+
         for (int i = 0; i < keys.length; ++i) {
             cache.put(keys[i], null);
         }

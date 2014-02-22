@@ -15,22 +15,24 @@
  */
 package com.google.code.simplelrucache;
 
-import java.util.Map;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Capacity based LRU version of LinkedHashMap
- * 
+ *
  * @param <K> map key class
  * @param <V> map value class
  * @author Damian Momot
  */
-class CapacityLruLinkedHashMap<K, V> extends LinkedHashMap<K, V> {   
-    private int capacity;
-    
+class CapacityLruLinkedHashMap<K, V> extends LinkedHashMap<K, V> {
+	private static final long serialVersionUID = 1L;
+
+	private final int capacity;
+
     /**
      * Creates LRU LinkedHashMap
-     * 
+     *
      * @param capacity
      * @param initialCapacity
      * @param loadFactor
@@ -38,23 +40,23 @@ class CapacityLruLinkedHashMap<K, V> extends LinkedHashMap<K, V> {
      */
     protected CapacityLruLinkedHashMap(int capacity, int initialCapacity, float loadFactor) {
         super(initialCapacity, loadFactor, true);
-        
+
         if (capacity <= 0) throw new IllegalArgumentException("capacity must be positive");
-        
+
         this.capacity = capacity;
     }
 
     @Override
-    protected boolean removeEldestEntry(Map.Entry eldest) {
+    protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
         return size() > capacity;
     }
-    
+
     /**
      * Returns capacity of map
-     * 
-     * @return 
+     *
+     * @return
      */
-    public int getCapacity() {
+    int getCapacity() {
         return this.capacity;
     }
 }
